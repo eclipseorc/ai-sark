@@ -1,0 +1,104 @@
+<form autocomplete="off" class="layui-form layui-box" style='padding:25px 30px 20px 0' action="{:request()->url()}" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">柜子序列号</label>
+        <div class="layui-input-block">
+            <input autofocus name="sn" value='{$vo.sn|default=""}' required="required"
+                   title="请输入柜子序列号" placeholder="请输入柜子序列号" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">柜子所属运营商</label>
+        <div class="layui-input-block">
+            <select name="own_id" title="own_id" class="layui-select" lay-filter="own_id">
+                <option value="0"></option>
+                <!--{foreach $carrierList as $item}-->
+                <option value="{$item.id}">{$item.username}</option>
+                <!--{/foreach}-->
+            </select>
+            <input type="hidden" name="own_name" value="{$item.own_name|default=''}"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">柜子名称</label>
+        <div class="layui-input-block">
+            <input autofocus name="name" value='{$vo.name|default=""}' required="required"
+                   title="请输入柜子名称" placeholder="请输入柜子名称" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">柜子地址</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入柜子地址" title="请输入柜子地址"
+                      class="layui-textarea" name="address">{$vo.address|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">柜子尺寸</label>
+        <div class="layui-inline">
+            <label class="layui-form-label">大</label>
+            <div class="layui-input-inline">
+                <input autofocus name="big" value="{$vo.big|default=0}"
+                       title="请输入大箱个数" placeholder="请输入大箱个数" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">小</label>
+            <div class="layui-input-inline">
+                <input autofocus name="small" value="{$vo.small|default=0}"
+                       title="请输入小箱个数" placeholder="请输入小箱个数" class="layui-input"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">开门方式</label>
+        <div class="layui-input-block">
+            <select name="open_type_id" title="open_type_id" class="layui-select">
+                <option value="0">请选择开门方式</option>
+                <!--{foreach $openTypeList as $item}-->
+                <option value="{$item.id}">{$item.name}</option>
+                <!--{/foreach}-->
+            </select>
+            <input type="hidden" name="open_type_name" value="{$vo.open_type_name|default=''}"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">柜子说明</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入柜子描述" title="请输入柜子描述"
+                      class="layui-textarea" name="remark">{$vo.remark|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/>{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+
+    <script>window.form.render();</script>
+    <script type="text/javascript">
+        /**
+         *
+         */
+        form.on('select(own_id)', function (item) {
+            var selected = item.elem[item.elem.selectedIndex].text;
+            $("input[name='own_name']").val(selected);
+            form.render();
+        });
+
+        form.on('select(open_type_id)', function (item) {
+            var selected = item.elem[item.elem.selectedIndex].text;
+            $("input[name='open_type_name']").val(selected);
+            form.render();
+        })
+    </script>
+</form>

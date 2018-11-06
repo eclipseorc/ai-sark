@@ -1,0 +1,101 @@
+{extend name='admin@public/content'}
+
+{block name="content"}
+
+<!-- 表单搜索 开始 -->
+<form autocomplete="off" class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get">
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">柜子名称</label>
+        <div class="layui-input-inline">
+            <input name="name" value="{$Think.get.name}" placeholder="请输入柜子名称" class="layui-input">
+        </div>
+    </div>
+
+    <!--<div class="layui-form-item layui-inline">
+        <label class="layui-form-label">快递代码</label>
+        <div class="layui-input-inline">
+            <input name="express_code" value="{$Think.get.express_code}" placeholder="请输入快递代码" class="layui-input">
+        </div>
+    </div>-->
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">添加时间</label>
+        <div class="layui-input-inline">
+            <input name="date" id="range-date" value="{$Think.get.date}" placeholder="请选择添加时间" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+    </div>
+
+</form>
+
+<script>
+    window.laydate.render({range: true, elem: '#range-date'});
+    window.form.render();
+</script>
+<!-- 表单搜索 结束 -->
+
+<form autocomplete="off" onsubmit="return false;" data-auto="true" method="post">
+    <input type="hidden" value="resort" name="action"/>
+    {if empty($list)}
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    {else}
+    <table class="layui-table" lay-skin="line" lay-size="sm">
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none="none" data-check-target='.list-check-box' type='checkbox'/>
+            </th>
+            <th class='text-left'>柜子序列号</th>
+            <th class="text-left">柜子名称</th>
+            <th class="text-left">箱子id</th>
+            <th class='text-left'>放入时间</th>
+            <th class='text-left'>取出时间</th>
+            <th class="text-left">使用者手机号</th>
+            <th class='text-left'>开箱方式</th>
+            <th class="text-left">收益</th>
+            <th class="text-left">状态</th>
+            <th class='text-left'>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+            </td>
+            <td class='text-left'>{$vo.sn}</td>
+            <td class='text-left'>{$vo.name}</td>
+            <td class='text-left'>{$vo.box_id}</td>
+            <td class='text-left'>{$vo.add_time}</td>
+            <td class='text-left'>{$vo.get_time}</td>
+            <td class='text-left'>{$vo.mobile}</td>
+            <td class='text-left'>{$vo.open_type_name}</td>
+            <td class='text-left'>{$vo.money}</td>
+            <td class='text-left'>
+                {if $vo.status eq 0}<span class="color-red">正在进行</span>{elseif $vo.status eq 1}<span class="color-green">正常结束</span>{else}<span class="color-red">提前结束</span> {/if}
+            </td>
+            <td class='text-left nowrap'>
+
+                <!--{if auth("$classuri/edit")}-->
+                <span class="text-explode">|</span>
+                <a data-title="编辑快递" data-modal='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
+                <!--{/if}-->
+
+                {if auth("$classuri/del")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='delete' data-action='{:url("$classuri/del")}'>删除</a>
+                {/if}
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page|raw}</p>{/if}
+    {/if}
+</form>
+{/block}
